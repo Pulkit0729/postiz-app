@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { GetOrgFromRequest } from '@gitroom/nestjs-libraries/user/org.from.request';
-import { Organization } from '@prisma/client';
+import { Organization, User } from '@prisma/client';
 import { StarsService } from '@gitroom/nestjs-libraries/database/prisma/stars/stars.service';
 import { CheckPolicies } from '@gitroom/backend/services/auth/permissions/permissions.ability';
 import {
@@ -10,12 +10,15 @@ import {
 import { OrganizationService } from '@gitroom/nestjs-libraries/database/prisma/organizations/organization.service';
 import {AddTeamMemberDto} from "@gitroom/nestjs-libraries/dtos/settings/add.team.member.dto";
 import {ApiTags} from "@nestjs/swagger";
+import { GetUserFromRequest } from '@gitroom/nestjs-libraries/user/user.from.request';
+import { UsersService } from '@gitroom/nestjs-libraries/database/prisma/users/users.service';
 
 @ApiTags('Settings')
 @Controller('/settings')
 export class SettingsController {
   constructor(
     private _starsService: StarsService,
+    private _usersService: UsersService,
     private _organizationService: OrganizationService
   ) {}
 
@@ -126,5 +129,21 @@ export class SettingsController {
       @Param('id') id: string
   ) {
     return this._organizationService.deleteTeamMember(org, id);
+  }
+
+  @Get('/email-notifications')
+  async getEmailNotifications(@GetUserFromRequest() user: User) {
+    return user.emailNotifications;
+  }
+
+  @Post('/email-notifications')
+  async updateEmailNotifications(
+    @GetUserFromRequest() user: User,
+    @Body('emailNotifications') emailNotifications: boolean
+  ) {
+    return await this._usersService.updateEmailNotifications(
+      user.id,
+      emailNotifications
+    );
   }
 }

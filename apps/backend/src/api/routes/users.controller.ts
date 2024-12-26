@@ -53,6 +53,8 @@ export class UsersController {
     if (!organization) {
       throw new HttpForbiddenException();
     }
+    console.log(user);
+    
     // @ts-ignore
     return {
       ...user,

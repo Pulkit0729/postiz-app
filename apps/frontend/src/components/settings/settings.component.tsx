@@ -9,9 +9,10 @@ import useSWR from 'swr';
 import { LoadingComponent } from '@gitroom/frontend/components/layout/loading';
 import { useRouter } from 'next/navigation';
 import { useVariables } from '@gitroom/react/helpers/variable.context';
+import NotificationCheckbox from './notification.component';
 
 export const SettingsComponent = () => {
-  const {isGeneral} = useVariables();
+  const { isGeneral } = useVariables();
   const user = useUser();
   const router = useRouter();
 
@@ -70,6 +71,8 @@ export const SettingsComponent = () => {
           {/*</div>*/}
         </div>
       )}
+      <NotificationCheckbox />
+
       {!!user?.tier?.team_members && <TeamsComponent />}
     </div>
   );

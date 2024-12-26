@@ -97,6 +97,17 @@ export class UsersRepository {
     });
   }
 
+  updateEmailNotifications(id: string, emailNotifications: boolean) {
+    return this._user.model.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        emailNotifications,
+      },
+    });
+  }
+
   changeAudienceSize(userId: string, audience: number) {
     return this._user.model.user.update({
       where: {

@@ -19,6 +19,7 @@ import { LogoutComponent } from '@gitroom/frontend/components/layout/logout.comp
 import { useSearchParams } from 'next/navigation';
 import { useVariables } from '@gitroom/react/helpers/variable.context';
 import { PublicComponent } from '@gitroom/frontend/components/public-api/public.component';
+import NotificationCheckbox from '../settings/notification.component';
 
 export const SettingsPopup: FC<{ getRef?: Ref<any> }> = (props) => {
   const {isGeneral} = useVariables();
@@ -27,12 +28,14 @@ export const SettingsPopup: FC<{ getRef?: Ref<any> }> = (props) => {
   const toast = useToaster();
   const swr = useSWRConfig();
   const user = useUser();
+  console.log(user);
+  
 
   const resolver = useMemo(() => {
     return classValidatorResolver(UserDetailDto);
   }, []);
   const form = useForm({ resolver });
-  const picture = form.watch('picture');
+  // const picture = form.watch('picture');
   const modal = useModals();
   const close = useCallback(() => {
     return modal.closeAll();
@@ -48,15 +51,15 @@ export const SettingsPopup: FC<{ getRef?: Ref<any> }> = (props) => {
     form.setValue('picture', personal.picture);
   }, []);
 
-  const openMedia = useCallback(() => {
-    showMediaBox((values) => {
-      form.setValue('picture', values);
-    });
-  }, []);
+  // const openMedia = useCallback(() => {
+  //   showMediaBox((values) => {
+  //     form.setValue('picture', values);
+  //   });
+  // }, []);
 
-  const remove = useCallback(() => {
-    form.setValue('picture', null);
-  }, []);
+  // const remove = useCallback(() => {
+  //   form.setValue('picture', null);
+  // }, []);
 
   const submit = useCallback(async (val: any) => {
     await fetch('/user/personal', {
@@ -195,7 +198,10 @@ export const SettingsPopup: FC<{ getRef?: Ref<any> }> = (props) => {
           {/*    <Button type="submit" className='rounded-md'>Save</Button>*/}
           {/*  </div>*/}
           {/*)}*/}
+         { console.log(user)}
+          
           {!!user?.tier?.team_members && isGeneral && <TeamsComponent />}
+          {isGeneral && <NotificationCheckbox />}
           {!!user?.tier?.public_api && isGeneral && showLogout && <PublicComponent />}
           {showLogout && <LogoutComponent />}
         </div>

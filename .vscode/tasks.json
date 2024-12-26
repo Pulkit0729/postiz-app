@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "npx nx run-many --target=serve --projects=frontend,backend,workers --parallel=4"
+		}
+	]
+}

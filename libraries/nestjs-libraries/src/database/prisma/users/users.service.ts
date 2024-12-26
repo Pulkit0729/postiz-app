@@ -55,4 +55,11 @@ export class UsersService {
   changePersonal(userId: string, body: UserDetailDto) {
     return this._usersRepository.changePersonal(userId, body);
   }
+
+  updateEmailNotifications(userId: string, emailNotifications: boolean) {
+    return this._usersRepository.updateEmailNotifications(
+      userId,
+      emailNotifications
+    );
+  }
 }
